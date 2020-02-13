@@ -22,5 +22,11 @@ RUN deps='cmake build-essential python python-dev wget xz-utils'\
         -DCMAKE_INSTALL_PREFIX=/opt/llvm/ -DCMAKE_BUILD_TYPE=Release ../llvm-9.0.0.src\
     && make -j4 && make install && cd ..\
     && rm -rf build llvm-9.0.0.src clang compiler-rt\
+    && rm -rf cfe-9.0.0.src.tar.xz compiler-rt-9.0.0.src.tar.xz llvm-9.0.0.src.tar.xz\
     && apt-get purge -y --auto-remove ${deps}
+
+
+# Download and build sanitized libcxx and libcxxabi
+
+# Download and build sanitized OpenMP
 
