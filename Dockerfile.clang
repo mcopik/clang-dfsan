@@ -1,0 +1,18 @@
+FROM ubuntu:bionic
+MAINTAINER Marcin Copik <mcopik@gmail.com>
+ARG NCPUS=1
+ARG LLVM_VERSION
+ENV NCPUS=$NCPUS
+ENV LLVM_VERSION=${LLVM_VERSION}
+
+COPY install_llvm.sh /
+
+# Tooling necessary to work with LLVM in general
+# Download standard LLVM with clang and compiler-rt
+# wget to download file, xz-utils to decompress xz files
+RUN deps='cmake ninja-build wget xz-utils python build-essential'\
+  && apt-get update\
+  && apt-get install -y ${deps}\
+  && /bin/bash install_llvm.sh ${LLVM_VERSION}\
+  && apt-get purge -y --auto-remove ${deps}
+
