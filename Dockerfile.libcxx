@@ -11,8 +11,8 @@ COPY install_libcxx.sh /
 RUN deps='cmake ninja-build wget xz-utils python build-essential'\
   && apt-get update\
   && apt-get install -y ${deps}\
-  && /bin/bash install_libcxx.sh ${LLVM_VERSION}\
-  && apt-get purge -y --auto-remove ${deps}
+  && /bin/bash install_libcxx.sh ${LLVM_VERSION}
 
 FROM ubuntu:bionic
-COPY --from=0 /opt/libcxx /opt/libcxx
+COPY --from=0 /opt/llvm /opt/llvm
+
