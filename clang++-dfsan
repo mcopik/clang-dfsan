@@ -1,0 +1,11 @@
+#!/bin/bash
+
+INPUT=$@
+
+clang++ -rtlib=compiler-rt\
+  -I /opt/llvm/include/c++/v1/\
+  -fsanitize=dataflow\
+  -stdlib=libc++\
+  "$@"\
+  -L /opt/llvm/lib\
+  -lunwind
