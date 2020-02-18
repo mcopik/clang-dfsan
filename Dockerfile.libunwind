@@ -15,4 +15,4 @@ RUN deps='cmake ninja-build wget xz-utils python build-essential'\
   && /bin/bash install_libunwind.sh ${LLVM_VERSION}
 
 FROM ubuntu:bionic
-COPY --from=0 /opt/llvm /opt/llvm
+COPY --from=0 /opt/libunwind /opt/llvm
