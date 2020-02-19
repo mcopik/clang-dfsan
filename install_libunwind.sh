@@ -11,7 +11,7 @@ FLAGS="-fsanitize=dataflow -fsanitize-blacklist=/dfsan_abilist.txt"
 
 cmake -G "Ninja"\
   -DCMAKE_BUILD_TYPE=MinSizeRel\
-  -DCMAKE_INSTALL_PREFIX=/opt/llvm\
+  -DCMAKE_INSTALL_PREFIX=/opt/libunwind\
   -DCMAKE_C_COMPILER=clang\
   -DCMAKE_CXX_COMPILER=clang++\
   -DLLVM_PATH=/opt/llvm/lib\

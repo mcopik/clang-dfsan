@@ -12,7 +12,7 @@ cd build_libcxxabi
 
 cmake -G "Ninja"\
   -DCMAKE_BUILD_TYPE=MinSizeRel\
-  -DCMAKE_INSTALL_PREFIX=/opt/llvm\
+  -DCMAKE_INSTALL_PREFIX=/opt/libcxx\
   -DCMAKE_C_COMPILER=clang\
   -DCMAKE_CXX_COMPILER=clang++\
   -DLLVM_PATH=/opt/llvm/lib\
@@ -30,7 +30,7 @@ cd build_libcxx
 
 cmake -G "Ninja"\
   -DCMAKE_BUILD_TYPE=MinSizeRel\
-  -DCMAKE_INSTALL_PREFIX=/opt/llvm\
+  -DCMAKE_INSTALL_PREFIX=/opt/libcxx\
   -DCMAKE_C_COMPILER=clang\
   -DCMAKE_CXX_COMPILER=clang++\
   -DCMAKE_C_FLAGS=-fsanitize=dataflow\
