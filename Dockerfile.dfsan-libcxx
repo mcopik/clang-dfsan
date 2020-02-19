@@ -1,0 +1,20 @@
+FROM clang-9.0 as clang_base
+FROM libcxx-9.0 as libcxx_base
+FROM libunwind-9.0 as libunwind_base
+
+FROM ubuntu:bionic
+# Install necessary requirements to run our toolchain
+# - libc as standard C library implementation
+# - GNU ld (binutils) as a standard linker
+RUN apt-get update\
+  && apt-get install -y binutils libc6-dev
+WORKDIR /
+COPY --from=clang_base /opt/llvm /opt/llvm
+COPY --from=libunwind_base /opt/llvm /opt/llvm
+COPY --from=libcxx_base /opt/llvm /opt/llvm
+
+COPY clang-dfsan /opt/llvm/bin/
+COPY clang++-dfsan /opt/llvm/bin/
+RUN chmod +x /opt/llvm/bin/clang-dfsan && chmod +x /opt/llvm/bin/clang++-dfsan
+ENV PATH=/opt/llvm/bin/:$PATH
+
