@@ -8,4 +8,6 @@ clang++ -rtlib=compiler-rt\
   -stdlib=libc++\
   "$@"\
   -L /opt/llvm/lib\
-  -lunwind
+  -lunwind\
+  -lc++abi
+
