@@ -1,4 +1,4 @@
-FROM clang-9.0
+FROM mcopik/clang-dfsan:clang-9.0
 MAINTAINER Marcin Copik <mcopik@gmail.com>
 ARG NCPUS=1
 ENV NCPUS=$NCPUS
