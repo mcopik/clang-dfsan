@@ -6,8 +6,9 @@ FROM ubuntu:bionic
 # Install necessary requirements to run our toolchain
 # - libc as standard C library implementation
 # - GNU ld (binutils) as a standard linker
+# - sudo to run commands as normal user
 RUN apt-get update\
-  && apt-get install -y binutils libc6-dev
+  && apt-get install -y binutils libc6-dev sudo
 WORKDIR /
 COPY --from=clang_base /opt/llvm /opt/llvm
 COPY --from=libunwind_base /opt/llvm /opt/llvm
@@ -17,4 +18,16 @@ COPY clang-dfsan /opt/llvm/bin/
 COPY clang++-dfsan /opt/llvm/bin/
 RUN chmod +x /opt/llvm/bin/clang-dfsan && chmod +x /opt/llvm/bin/clang++-dfsan
 ENV PATH=/opt/llvm/bin/:$PATH
+
+ENV USER=docker
+ENV HOME=/home/${USER}
+RUN useradd -m ${USER}\
+    # Let the user use sudo
+    && usermod -aG sudo ${USER}\
+    # Set correct permission on home directory
+    && chown -R ${USER}:${USER} ${HOME}\
+    # Enable non-password use of sudo
+    && echo "$USER ALL=(ALL:ALL) NOPASSWD: ALL" | tee /etc/sudoers.d/dont-prompt-$USER-for-password
+WORKDIR ${HOME}
+USER ${USER}:${USER}
 
