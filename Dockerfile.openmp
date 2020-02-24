@@ -1,0 +1,18 @@
+FROM clang-9.0
+MAINTAINER Marcin Copik <mcopik@gmail.com>
+ARG NCPUS=1
+ENV NCPUS=$NCPUS
+ENV LLVM_VERSION=9.0.0
+
+ENV PATH=/opt/llvm/bin/:$PATH
+
+COPY install_openmp.sh /
+COPY dfsan_abilist.txt /
+
+RUN deps='cmake ninja-build wget xz-utils python build-essential'\
+  && apt-get update\
+  && apt-get install -y ${deps}\
+  && /bin/bash install_openmp.sh ${LLVM_VERSION}
+
+FROM ubuntu:bionic
+COPY --from=0 /opt/openmp /opt/llvm
