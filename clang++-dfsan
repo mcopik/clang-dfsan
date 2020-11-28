@@ -5,9 +5,10 @@ INPUT=$@
 clang++ -rtlib=compiler-rt\
   -I /opt/llvm/include/c++/v1/\
   -fsanitize=dataflow\
+  -fsanitize-blacklist=/opt/llvm/share/dfsan_abilist.txt\
   -stdlib=libc++\
   "$@"\
   -L /opt/llvm/lib\
-  -lunwind\
-  -lc++abi
+  -lc++abi\
+  -lunwind
 
