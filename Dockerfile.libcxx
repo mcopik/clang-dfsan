@@ -1,4 +1,5 @@
-FROM mcopik/clang-dfsan:clang-9.0 as clang_base
+ARG BASE
+FROM mcopik/clang-dfsan:${BASE} as clang_base
 MAINTAINER Marcin Copik <mcopik@gmail.com>
 ARG NCPUS=1
 ENV NCPUS=$NCPUS
@@ -7,6 +8,7 @@ ENV LLVM_VERSION=9.0.0
 ENV PATH=/opt/llvm/bin/:$PATH
 
 COPY install_libcxx.sh /
+COPY dfsan_abilist.txt /
 
 RUN deps='cmake ninja-build wget xz-utils python build-essential'\
   && apt-get update\

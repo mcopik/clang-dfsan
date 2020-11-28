@@ -10,16 +10,19 @@ mv libcxxabi-${VERSION}.src libcxxabi
 mkdir build_libcxxabi
 cd build_libcxxabi
 
+FLAGS="-fsanitize=dataflow -fsanitize-blacklist=/dfsan_abilist.txt"
+
 cmake -G "Ninja"\
   -DCMAKE_BUILD_TYPE=MinSizeRel\
   -DCMAKE_INSTALL_PREFIX=/opt/libcxx\
   -DCMAKE_C_COMPILER=clang\
   -DCMAKE_CXX_COMPILER=clang++\
   -DLLVM_PATH=/opt/llvm/lib\
-  -DCMAKE_C_FLAGS=-fsanitize=dataflow\
-  -DCMAKE_CXX_FLAGS=-fsanitize=dataflow\
+  -DCMAKE_C_FLAGS="$FLAGS"\
+  -DCMAKE_CXX_FLAGS="$FLAGS"\
   -DLIBCXXABI_ENABLE_SHARED=NO\
   -DLIBCXXABI_LIBCXX_PATH=../libcxx\
+  -DLIBCXXABI_USE_LLVM_UNWINDER=On\
   ../libcxxabi
 ninja -j${NCPUS} install
 
@@ -33,8 +36,8 @@ cmake -G "Ninja"\
   -DCMAKE_INSTALL_PREFIX=/opt/libcxx\
   -DCMAKE_C_COMPILER=clang\
   -DCMAKE_CXX_COMPILER=clang++\
-  -DCMAKE_C_FLAGS=-fsanitize=dataflow\
-  -DCMAKE_CXX_FLAGS=-fsanitize=dataflow\
+  -DCMAKE_C_FLAGS="$FLAGS"\
+  -DCMAKE_CXX_FLAGS="$FLAGS"\
   -DLIBCXX_ENABLE_SHARED=OFF\
   -DLIBCXX_CXX_ABI=libcxxabi\
   -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON\
