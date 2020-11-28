@@ -1,0 +1,15 @@
+#!/bin/bash
+
+INPUT=$@
+
+clang++ -rtlib=compiler-rt\
+  -I /opt/llvm/include/c++/v1/\
+  -fsanitize=dataflow\
+  -fsanitize-blacklist=/opt/llvm/dfsan_abilist.txt\
+  -mllvm -dfsan-cfsan-enable\
+  -stdlib=libc++\
+  "$@"\
+  -L /opt/llvm/lib\
+  -lc++abi\
+  -lunwind
+

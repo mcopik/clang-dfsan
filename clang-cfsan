@@ -1,0 +1,10 @@
+#!/bin/bash
+INPUT=$@
+
+clang -rtlib=compiler-rt\
+  -I /opt/llvm/include/c++/v1/\
+  -fsanitize=dataflow\
+  -mllvm -dfsan-cfsan-enable\
+  "$@"\
+  -L /opt/llvm/lib\
+  -lunwind
