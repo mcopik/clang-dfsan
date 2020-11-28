@@ -1,9 +1,14 @@
-FROM mcopik/clang-dfsan:clang-9.0 as clang_base
-FROM mcopik/clang-dfsan:libcxx-9.0 as libcxx_base
-FROM mcopik/clang-dfsan:libunwind-9.0 as libunwind_base
+ARG BASE
+FROM mcopik/clang-dfsan:clang-${BASE}-9.0 as clang_base
+FROM mcopik/clang-dfsan:libcxx-${BASE}-9.0 as libcxx_base
+FROM mcopik/clang-dfsan:libunwind-${BASE}-9.0 as libunwind_base
 FROM mcopik/clang-dfsan:openmp-9.0 as openmp_base
 
 FROM ubuntu:bionic
+# https://github.com/moby/moby/issues/34129
+ARG BASE
+ENV BASE=$BASE
+
 # Install necessary requirements to run our toolchain
 # - libc as standard C library implementation
 # - GNU ld (binutils) as a standard linker
@@ -15,10 +20,11 @@ COPY --from=clang_base /opt/llvm /opt/llvm
 COPY --from=libunwind_base /opt/llvm /opt/llvm
 COPY --from=libcxx_base /opt/llvm /opt/llvm
 COPY --from=openmp_base /opt/llvm /opt/llvm
+ADD dfsan_abilist.txt /opt/llvm/
 
-COPY clang-dfsan /opt/llvm/bin/
-COPY clang++-dfsan /opt/llvm/bin/
-RUN chmod +x /opt/llvm/bin/clang-dfsan && chmod +x /opt/llvm/bin/clang++-dfsan
+ADD clang-${BASE} /opt/llvm/bin/
+ADD clang++-${BASE} /opt/llvm/bin/
+RUN chmod +x /opt/llvm/bin/clang-${BASE} && chmod +x /opt/llvm/bin/clang++-${BASE}
 ENV PATH=/opt/llvm/bin/:$PATH
 
 ENV USER=docker
